@@ -5,6 +5,7 @@ export default {
   state: () => ({
     loginUser: {
       userName: "fufu",
+      role: "admin",
     },
   }),
   actions: {
