@@ -1,6 +1,6 @@
 <template>
   <div id="menu">
-    <a-row style="margin-bottom: 16px" align="center">
+    <a-row style="margin-bottom: 10px" align="center" :wrap="false">
       <a-col flex="auto">
         <a-menu
           mode="horizontal"
@@ -13,7 +13,7 @@
               <div class="title">判题系统</div>
             </div>
           </a-menu-item>
-          <a-menu-item v-for="route in routes" :key="route.path">
+          <a-menu-item v-for="route in visibleRoutes" :key="route.path">
             {{ route.name }}
           </a-menu-item>
         </a-menu>
@@ -30,11 +30,24 @@
 <script setup scoped>
 import { useRouter } from "vue-router";
 import { routes } from "../router/routes";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import checkAccess from "@/access/checkAccess";
 
 const router = useRouter();
-
+const store = useStore();
+const loginUser = store.state.user?.loginUser;
+const visibleRoutes = computed(() => {
+  return routes.filter((item) => {
+    if (item.meta?.hideInMenu) {
+      return false;
+    }
+    if (checkAccess(loginUser, item?.meta?.access)) {
+      return false;
+    }
+    return true;
+  });
+});
 // 默认的主题
 const selectedKeys = ref([routes.path]);
 
@@ -48,8 +61,6 @@ const handleClick = (key) => {
     path: key,
   });
 };
-
-const store = useStore();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

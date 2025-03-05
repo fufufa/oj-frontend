@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
+import ACCESS_AUTH from "@/access/accessAuth";
 import HomeView from "../views/HomeView.vue";
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -7,12 +8,20 @@ export const routes: Array<RouteRecordRaw> = [
     component: HomeView,
   },
   {
+    path: "/hide",
+    name: "hide",
+    component: HomeView,
+    meta: {
+      hideInMenu: true,
+    },
+  },
+  {
     path: "/admin",
     name: "admin",
     component: () =>
       import(/* webpackChunkName: "admin" */ "../views/AdminView.vue"),
     meta: {
-      access: "canAdmin",
+      access: ACCESS_AUTH.ADMIN,
     },
   },
   {
@@ -20,6 +29,9 @@ export const routes: Array<RouteRecordRaw> = [
     name: "noAuth",
     component: () =>
       import(/* webpackChunkName: "noAuth" */ "../views/NoAuthView.vue"),
+    meta: {
+      hideInMenu: true,
+    },
   },
   {
     path: "/about",

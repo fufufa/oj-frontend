@@ -1,6 +1,6 @@
 <template>
   <div id="basiclayout">
-    <a-layout style="height: 400px">
+    <a-layout style="min-height: 100vh">
       <a-layout-header class="header">
         <GlobalMenu />
       </a-layout-header>
@@ -17,8 +17,8 @@
 }
 
 #basiclayout .header {
-  background: #333;
-  margin-bottom: 6px;
+  position: sticky;
+  top: 0;
 }
 
 #basiclayout .content {
@@ -30,10 +30,7 @@
 #basiclayout .footer {
   background: #efefef;
   padding: 16px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  text-align: center;
 }
 </style>
 
