@@ -1,20 +1,29 @@
 <template>
   <div id="menu">
-    <a-menu
-      mode="horizontal"
-      :selected-keys="selectedKeys"
-      @menu-item-click="handleClick"
-    >
-      <a-menu-item key="0" disabled>
-        <div class="title-bar">
-          <img src="../assets/logo.jpg" class="logo" alt="" />
-          <div class="title">判题系统</div>
+    <a-row style="margin-bottom: 16px" align="center">
+      <a-col flex="auto">
+        <a-menu
+          mode="horizontal"
+          :selected-keys="selectedKeys"
+          @menu-item-click="handleClick"
+        >
+          <a-menu-item key="0" disabled>
+            <div class="title-bar">
+              <img src="../assets/logo.jpg" class="logo" alt="" />
+              <div class="title">判题系统</div>
+            </div>
+          </a-menu-item>
+          <a-menu-item v-for="route in routes" :key="route.path">
+            {{ route.name }}
+          </a-menu-item>
+        </a-menu>
+      </a-col>
+      <a-col flex="100px">
+        <div>
+          {{ store.state.user?.loginUser?.userName || "未登录" }}
         </div>
-      </a-menu-item>
-      <a-menu-item v-for="route in routes" :key="route.path">
-        {{ route.name }}
-      </a-menu-item>
-    </a-menu>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
@@ -22,6 +31,7 @@
 import { useRouter } from "vue-router";
 import { routes } from "../router/routes";
 import { ref } from "vue";
+import { useStore } from "vuex";
 
 const router = useRouter();
 
@@ -29,7 +39,7 @@ const router = useRouter();
 const selectedKeys = ref([routes.path]);
 
 // 每次跳转修改选中的菜单项
-router.afterEach((to, from, failure) => {
+router.afterEach((to) => {
   selectedKeys.value = [to.path];
 });
 
@@ -38,6 +48,8 @@ const handleClick = (key) => {
     path: key,
   });
 };
+
+const store = useStore();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -18,7 +18,7 @@
 
 #basiclayout .header {
   background: #333;
-  margin-bottom: 16px;
+  margin-bottom: 6px;
 }
 
 #basiclayout .content {
