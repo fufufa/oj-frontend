@@ -1,7 +1,28 @@
 import { RouteRecordRaw } from "vue-router";
 import ACCESS_AUTH from "@/access/accessAuth";
-import HomeView from "../views/HomeView.vue";
+import HomeView from "@/views/HomeView.vue";
+import UserLayout from "@/layouts/UserLayout.vue";
+import UserLoginView from "@/views/user/UserLoginView.vue";
+import UserRegisterView from "@/views/user/UserRegisterView.vue";
+
 export const routes: Array<RouteRecordRaw> = [
+  {
+    path: "/user",
+    name: "用户",
+    component: UserLayout,
+    children: [
+      {
+        path: "/user/login",
+        name: "用户登录",
+        component: UserLoginView,
+      },
+      {
+        path: "/user/register",
+        name: "用户注册",
+        component: UserRegisterView,
+      },
+    ],
+  },
   {
     path: "/",
     name: "home",
@@ -29,9 +50,6 @@ export const routes: Array<RouteRecordRaw> = [
     name: "noAuth",
     component: () =>
       import(/* webpackChunkName: "noAuth" */ "../views/NoAuthView.vue"),
-    meta: {
-      hideInMenu: true,
-    },
   },
   {
     path: "/about",

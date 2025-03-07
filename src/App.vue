@@ -1,24 +1,18 @@
 <template>
   <div id="app">
-    <BasicLayout></BasicLayout>
+    <template v-if="route.path.startsWith('/user')">
+      <router-view></router-view>
+    </template>
+    <template v-else>
+      <BasicLayout></BasicLayout>
+    </template>
   </div>
 </template>
 <style></style>
 
 <script setup lang="ts">
 import BasicLayout from "@/layouts/BasicLayout.vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
-const router = useRouter();
-const store = useStore();
+import { useRoute } from "vue-router";
 
-router.beforeEach((to, from, next) => {
-  if (to.meta?.access === "canAdmin") {
-    if (store.state.user.loginUser?.userRole === "ADMIN") {
-      next({ path: "/noAuth" });
-      return;
-    }
-  }
-  next();
-});
+const route = useRoute();
 </script>

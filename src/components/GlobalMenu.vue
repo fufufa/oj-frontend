@@ -55,6 +55,12 @@ const selectedKeys = ref([routes.path]);
 router.afterEach((to) => {
   selectedKeys.value = [to.path];
 });
+setTimeout(() => {
+  store.dispatch("getLoginUser", {
+    userName: "why",
+    userRole: "ADMIN",
+  });
+}, 1000);
 
 const handleClick = (key) => {
   router.push({
