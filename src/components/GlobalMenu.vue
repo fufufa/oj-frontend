@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script setup scoped>
+<script setup>
 import { useRouter } from "vue-router";
 import { routes } from "../router/routes";
 import { computed, ref } from "vue";
@@ -37,6 +37,7 @@ import checkAccess from "@/access/checkAccess";
 const router = useRouter();
 const store = useStore();
 const loginUser = store.state.user?.loginUser;
+console.log(store.state.user);
 const visibleRoutes = computed(() => {
   return routes.filter((item) => {
     if (item.meta?.hideInMenu) {

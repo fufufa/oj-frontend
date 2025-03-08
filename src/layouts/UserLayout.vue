@@ -1,9 +1,12 @@
 <template>
   <div id="userLayout">
     <a-layout style="min-height: 100vh">
-      <a-layout-header class="header"> 用户布局 </a-layout-header>
+      <a-layout-header class="header">
+        <img src="../assets/logo.jpg" alt="" class="loginLogo" />
+        <div>登录判题系统</div>
+      </a-layout-header>
       <a-layout-content class="content">
-        <!-- <router-view /> -->
+        <router-view />
       </a-layout-content>
       <a-layout-footer class="footer">Footer</a-layout-footer>
     </a-layout>
@@ -15,18 +18,21 @@
 }
 
 #userLayout .header {
-  position: sticky;
-  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #userLayout .content {
-  background: linear-gradient(to right, #bbb, #fff);
+  display: flex;
+  justify-content: center;
   padding: 20px;
-  margin-bottom: 16px;
 }
-
+.loginLogo {
+  padding-right: 20px;
+  height: 48px;
+}
 #userLayout .footer {
-  background: #efefef;
   padding: 16px;
   text-align: center;
 }
