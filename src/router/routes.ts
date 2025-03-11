@@ -1,9 +1,10 @@
 import { RouteRecordRaw } from "vue-router";
 import ACCESS_AUTH from "@/access/accessAuth";
-import HomeView from "@/views/HomeView.vue";
+import ExampleView from "@/views/ExampleView.vue";
 import UserLayout from "@/layouts/UserLayout.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
 import UserRegisterView from "@/views/user/UserRegisterView.vue";
+import AddQuestionView from "@/views/question/AddQuestionView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -28,13 +29,21 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    name: "浏览题目",
+    component: ExampleView,
+  },
+  {
+    path: "/add/question",
+    name: "创建题目",
+    component: AddQuestionView,
+    meta: {
+      access: ACCESS_AUTH.ADMIN,
+    },
   },
   {
     path: "/hide",
-    name: "hide",
-    component: HomeView,
+    name: "隐藏",
+    component: ExampleView,
     meta: {
       hideInMenu: true,
     },
@@ -50,7 +59,7 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/noAuth",
-    name: "noAuth",
+    name: "无权限",
     component: () =>
       import(/* webpackChunkName: "noAuth" */ "../views/NoAuthView.vue"),
   },

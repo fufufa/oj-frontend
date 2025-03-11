@@ -38,4 +38,4 @@
 }
 </style>
 
-<script></script>
+<script setup></script>

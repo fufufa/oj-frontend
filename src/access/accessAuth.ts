@@ -3,8 +3,8 @@
  */
 const ACCESS_AUTH = {
   NOT_LOGIN: "NOT_LOGIN", // 未登录
-  USER: "USER",
-  ADMIN: "ADMIN",
+  USER: "user",
+  ADMIN: "admin",
 };
 
 export default ACCESS_AUTH;

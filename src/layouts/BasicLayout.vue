@@ -5,7 +5,7 @@
         <GlobalMenu />
       </a-layout-header>
       <a-layout-content class="content">
-        <!-- <router-view /> -->
+        <router-view />
       </a-layout-content>
       <a-layout-footer class="footer">Footer</a-layout-footer>
     </a-layout>
@@ -34,12 +34,6 @@
 }
 </style>
 
-<script>
+<script setup>
 import GlobalMenu from "@/components/GlobalMenu.vue";
-
-export default {
-  components: {
-    GlobalMenu,
-  },
-};
 </script>

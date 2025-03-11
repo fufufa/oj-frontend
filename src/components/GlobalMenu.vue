@@ -36,14 +36,12 @@ import checkAccess from "@/access/checkAccess";
 
 const router = useRouter();
 const store = useStore();
-const loginUser = store.state.user?.loginUser;
-console.log(store.state.user);
 const visibleRoutes = computed(() => {
   return routes.filter((item) => {
     if (item.meta?.hideInMenu) {
       return false;
     }
-    if (checkAccess(loginUser, item?.meta?.access)) {
+    if (checkAccess(store.state.user?.loginUser, item?.meta?.access)) {
       return false;
     }
     return true;
@@ -56,12 +54,6 @@ const selectedKeys = ref([routes.path]);
 router.afterEach((to) => {
   selectedKeys.value = [to.path];
 });
-setTimeout(() => {
-  store.dispatch("getLoginUser", {
-    userName: "why",
-    userRole: "ADMIN",
-  });
-}, 1000);
 
 const handleClick = (key) => {
   router.push({
