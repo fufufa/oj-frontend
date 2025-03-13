@@ -1,14 +1,8 @@
 <template>
   <div id="addQuetionView">创建题目</div>
-  <a-form-item field="title" label="标题">
-    <a-input v-model="form.title" placeholder="请输入标题"></a-input>
-  </a-form-item>
   <a-form :model="form" label-align="left">
-    <a-form-item field="anwer" label="答案">
-      <MdEditor />
-    </a-form-item>
-    <a-form-item field="content" label="题目内容">
-      <MdEditor />
+    <a-form-item field="title" label="标题">
+      <a-input v-model="form.title" placeholder="请输入标题"></a-input>
     </a-form-item>
     <a-form-item field="tags" label="标签">
       <a-input-tag
@@ -16,6 +10,12 @@
         placeholder="请输入标签"
         allow-clear
       ></a-input-tag>
+    </a-form-item>
+    <a-form-item field="anwer" label="答案">
+      <MdEditor />
+    </a-form-item>
+    <a-form-item field="content" label="题目内容">
+      <MdEditor />
     </a-form-item>
     <a-form-item label="判题配置" :content-flex="false" :merge-props="false">
       <a-space direction="vertical" style="min-width: 480px">
@@ -75,17 +75,24 @@
       <a-button @click="handleAdd">新增测试用例</a-button>
     </a-form-item>
     <a-form-item>
-      <a-button>Submit</a-button>
+      <a-button type="primary" @click="doSubmit">{{
+        updatePage ? "更新" : "提交"
+      }}</a-button>
     </a-form-item>
   </a-form>
 </template>
 
 <script setup lang="ts">
+import { QuestionControllerService } from "@/api";
 import MdEditor from "@/components/MdEditor.vue";
 import { Message } from "@arco-design/web-vue";
 import { reactive } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+// 表单数据
 const form = reactive({
-  title: "暴力",
+  title: "",
   answer: "",
   content: "",
   tags: [],
@@ -106,6 +113,36 @@ const form = reactive({
   },
 });
 /**
+ * 根据题目id加载数据
+ */
+const loadData = async () => {
+  const id = route.query.id;
+  const res = await QuestionControllerService.getQuestionByIdUsingGet(
+    id as any
+  );
+
+  if (res.code === 0) {
+    form.id = res.data?.id as any;
+    form.title = res.data?.title as string;
+    form.answer = res.data?.answer as string;
+    form.content = res.data?.content as string;
+    form.tags = JSON.parse(res.data?.tags as string);
+    form.judgeCase = JSON.parse(res.data?.judgeCase as string);
+    form.judgeConfig = JSON.parse(res.data?.judgeConfig as string);
+    console.log("res", form);
+  } else {
+    Message.error(res.message as string);
+  }
+};
+
+// 是否是更新页面
+const updatePage = route.path.includes("update");
+if (updatePage) {
+  // 更新页面需要初始化数据
+  loadData();
+}
+
+/**
  * 删除测试用例
  * @param index
  */
@@ -124,6 +161,26 @@ const handleAdd = () => {
     input: "",
     output: "",
   });
+};
+/**
+ * 提交
+ */
+const doSubmit = async () => {
+  if (updatePage) {
+    const res = await QuestionControllerService.updateQuestionUsingPost(form);
+    if (res.code === 0) {
+      Message.success("更新成功");
+    } else {
+      Message.error("更新失败", res.message);
+    }
+    return;
+  }
+  const res = await QuestionControllerService.addQuestionUsingPost(form);
+  if (res.code === 0) {
+    Message.success("提交成功");
+  } else {
+    Message.error("添加失败", res.message);
+  }
 };
 </script>
 

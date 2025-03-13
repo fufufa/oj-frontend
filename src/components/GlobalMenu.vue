@@ -19,7 +19,7 @@
         </a-menu>
       </a-col>
       <a-col flex="100px">
-        <div>
+        <div @click="handleClick('/user/login')">
           {{ store.state.user?.loginUser?.userName || "未登录" }}
         </div>
       </a-col>
@@ -55,6 +55,7 @@ router.afterEach((to) => {
   selectedKeys.value = [to.path];
 });
 
+// 跳转到指定的路由
 const handleClick = (key) => {
   router.push({
     path: key,

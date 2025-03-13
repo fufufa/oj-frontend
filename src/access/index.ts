@@ -10,7 +10,6 @@ router.beforeEach(async function (to, from, next) {
   //自动登录
   if (!loginUser.userRole) {
     await store.dispatch("getLoginUser");
-    console.log(store);
   }
   const needAccess = to.meta?.access ?? ACCESS_AUTH.NOT_LOGIN;
   // 要跳转的页面需要登录
