@@ -14,7 +14,11 @@ router.beforeEach(async function (to, from, next) {
   const needAccess = to.meta?.access ?? ACCESS_AUTH.NOT_LOGIN;
   // 要跳转的页面需要登录
   if (needAccess !== ACCESS_AUTH.NOT_LOGIN) {
-    if (!store.state.user.loginUser || !store.state.user.loginUser.userRole) {
+    if (
+      !store.state.user.loginUser ||
+      !store.state.user.loginUser.userRole ||
+      store.state.user.loginUser.userRole === ACCESS_AUTH.NOT_LOGIN
+    ) {
       next(`/user/login?redirect=${to.fullPath}`);
       return;
     }

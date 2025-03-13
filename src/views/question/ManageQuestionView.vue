@@ -7,9 +7,10 @@
       :pagination="{
         showTotal: true,
         total: total,
-        current: searchParams.page,
+        current: searchParams.current,
         pageSize: searchParams.pageSize,
       }"
+      @page-change="onPageChange"
     >
       <template #optional="{ record }">
         <a-space>
@@ -34,7 +35,7 @@ const router = useRouter();
 const dataList = ref([]);
 const total = ref(0);
 const searchParams = ref({
-  page: 1,
+  current: 1,
   pageSize: 10,
 });
 
@@ -108,7 +109,19 @@ const columns = [
   },
 ];
 
-// 修改数据
+/**
+ * 分页改变
+ * @param page
+ */
+const onPageChange = (page: number) => {
+  searchParams.value.current = page;
+  loadData();
+};
+
+/**
+ * 更新数据
+ * @param question
+ */
 const doUpdate = (question: Question) => {
   router.push({
     path: "/update/question",
@@ -118,7 +131,10 @@ const doUpdate = (question: Question) => {
   });
 };
 
-// 删除数据
+/**
+ * 删除数据
+ * @param question
+ */
 const doDelete = (question: Question) => {
   Modal.confirm({
     title: "确定删除吗？",
