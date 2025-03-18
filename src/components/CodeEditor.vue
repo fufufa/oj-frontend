@@ -25,25 +25,22 @@ const props = withDefaults(defineProps<Props>(), {
   },
 });
 
-watch([props.language], () => {
-  codeEditor.value = monaco.editor.create(codeContainerRef.value, {
-    value: props.value,
-    language: "java",
-    automaticLayout: true,
-    lineNumbers: "on",
-    colorDecorators: true, // 颜色装饰器
-    minimap: {
-      enabled: true,
-    },
-    readOnly: false,
-    theme: "vs-dark",
-  });
-  codeEditor.value.onDidChangeModelContent(() => {
-    props.handleChange(toRaw(codeEditor.value).getValue());
-  });
-});
+watch(
+  () => props.language,
+  () => {
+    if (codeEditor.value) {
+      monaco.editor.setModelLanguage(
+        toRaw(codeEditor.value).getModel(),
+        props.language
+      );
+    }
+  }
+);
 
 onMounted(() => {
+  if (!codeContainerRef.value) {
+    return;
+  }
   codeEditor.value = monaco.editor.create(codeContainerRef.value, {
     value: props.value,
     language: "java",
