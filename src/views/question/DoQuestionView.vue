@@ -62,7 +62,6 @@ import { ref, onMounted } from "vue";
 import {
   QuestionVO,
   QuestionControllerService,
-  QuestionSubmitControllerService,
   QuestionSubmitAddRequest,
 } from "@/api";
 import { Message } from "@arco-design/web-vue";
@@ -98,7 +97,7 @@ onMounted(() => {
  * 提交代码
  */
 const onSubmit = async () => {
-  const res = await QuestionSubmitControllerService.doQuestionSubmitUsingPost({
+  const res = await QuestionControllerService.doQuestionSubmitUsingPost({
     ...form.value,
     questionId: id as any,
   });
