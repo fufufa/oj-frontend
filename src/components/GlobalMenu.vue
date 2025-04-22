@@ -18,9 +18,34 @@
           </a-menu-item>
         </a-menu>
       </a-col>
-      <a-col flex="100px">
-        <div @click="handleClick('/user/login')">
-          {{ store.state.user?.loginUser?.userName || "未登录" }}
+      <a-col flex="150px" style="padding-right: 20px">
+        <div>
+          <div
+            class="beforLogin"
+            v-if="!store.state.user?.loginUser?.id"
+            @click="handleClick('/user/login')"
+            style="cursor: pointer"
+          >
+            请登录
+          </div>
+          <div class="afterLogin" v-else>
+            <a-popover trigger="click">
+              <a-button type="text">
+                <a-typography-text style="margin-bottom: 0px" ellipsis>
+                  welcome
+                  {{
+                    store.state.user?.loginUser?.userName ||
+                    store.state.user?.loginUser?.userAccount
+                  }}
+                </a-typography-text></a-button
+              >
+              <template #content>
+                <a-button type="primary" status="danger" @click="signOut"
+                  >退出登录</a-button
+                >
+              </template>
+            </a-popover>
+          </div>
         </div>
       </a-col>
     </a-row>
@@ -33,6 +58,8 @@ import { routes } from "../router/routes";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import checkAccess from "@/access/checkAccess";
+import { UserControllerService } from "@/api";
+import message from "@arco-design/web-vue/es/message";
 
 const router = useRouter();
 const store = useStore();
@@ -61,6 +88,17 @@ const handleClick = (key) => {
     path: key,
   });
 };
+
+// 退出登录
+const signOut = async () => {
+  const res = await UserControllerService.userLogoutUsingPost();
+  if (res.code === 0) {
+    message.success("退出成功");
+    await store.dispatch("getLoginUser");
+  } else {
+    message.error("退出失败" + res.message);
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -68,7 +106,7 @@ const handleClick = (key) => {
 #menu {
   box-sizing: border-box;
   width: 100%;
-  background-color: var(--color-neutral-2);
+  background-color: white;
 }
 
 .title-bar {

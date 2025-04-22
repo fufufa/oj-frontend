@@ -51,7 +51,6 @@
           :language="form?.language ?? 'java'"
           :handleChange="onHandleChange"
         />
-        <a-button type="primary" @click="onSubmit">提交代码</a-button>
       </a-col>
     </a-row>
   </div>
@@ -65,17 +64,18 @@ import {
   QuestionSubmitAddRequest,
 } from "@/api";
 import { Message } from "@arco-design/web-vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import CodeEditor from "@/components/CodeEditor.vue";
 import MdViewer from "@/components/MdViewer.vue";
 
 const route = useRoute();
+const router = useRouter();
 const id = route.query.id;
 // 数据列表初始化
 const question = ref<QuestionVO>();
 const form = ref<QuestionSubmitAddRequest>({
   language: "java",
-  code: "",
+  code: '\npublic class Main {\n  public static void main(String[] args) {\n    int a = Integer.parseInt(args[0]);\n    int b = Integer.parseInt(args[1]);\n    System.out.println("结果：" + (a + b));\n  }\n}',
 });
 
 const loadData = async () => {
@@ -103,6 +103,9 @@ const onSubmit = async () => {
   });
   if (res.code === 0) {
     Message.success("提交成功");
+    router.push({
+      path: "/questionsSubmit",
+    });
   } else {
     Message.error(res.message);
   }

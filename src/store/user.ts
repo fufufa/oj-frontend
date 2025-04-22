@@ -11,11 +11,11 @@ export default {
   actions: {
     async getLoginUser({ commit, state }, users) {
       const res = await UserControllerService.getLoginUserUsingGet();
+      console.log(res);
       if (res.code === 0) {
         commit("updateUser", res.data);
       } else {
         commit("updateUser", {
-          ...state.loginUser,
           userRole: ACCESS_AUTH.NOT_LOGIN,
         });
       }

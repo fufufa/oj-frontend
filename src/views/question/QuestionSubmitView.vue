@@ -37,6 +37,13 @@
           <div @click="doQuesitons(record)">{{ record.questionId }}</div>
         </a-space>
       </template>
+      <template #status="{ record }">
+        <a-space>
+          <a-tag :color="statusMap[record.status].color">{{
+            statusMap[record.status].text
+          }}</a-tag>
+        </a-space>
+      </template>
       <template #judgeInfo="{ record }">
         <a-space>
           {{ JSON.stringify(record.judgeInfo) }}
@@ -62,6 +69,25 @@ import { useRouter } from "vue-router";
 import moment from "moment";
 
 const router = useRouter();
+// 定义状态映射
+const statusMap = {
+  0: {
+    text: "等待中",
+    color: "gray",
+  },
+  1: {
+    text: "判题中",
+    color: "orange",
+  },
+  2: {
+    text: "成功",
+    color: "green",
+  },
+  3: {
+    text: "失败",
+    color: "red",
+  },
+};
 
 // 数据列表初始化
 const dataList = ref([]);
@@ -108,7 +134,7 @@ const columns = [
   },
   {
     title: "提交状态",
-    dataIndex: "status",
+    slotName: "status",
   },
   {
     title: "判题信息",

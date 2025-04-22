@@ -23,17 +23,15 @@ export const routes: Array<RouteRecordRaw> = [
         name: "用户登录",
         component: UserLoginView,
       },
-      {
-        path: "/user/register",
-        name: "用户注册",
-        component: UserRegisterView,
-      },
     ],
   },
   {
     path: "/",
     name: "主页",
     component: QuestionsView,
+    meta: {
+      hideInMenu: true,
+    },
   },
   {
     path: "/questions",
@@ -78,14 +76,6 @@ export const routes: Array<RouteRecordRaw> = [
       access: ACCESS_AUTH.ADMIN,
     },
   },
-  // {
-  //   path: "/hide",
-  //   name: "隐藏",
-  //   component: ExampleView,
-  //   meta: {
-  //     hideInMenu: true,
-  //   },
-  // },
   // {
   //   path: "/admin",
   //   name: "admin",

@@ -7,7 +7,9 @@
       <a-layout-content class="content">
         <router-view />
       </a-layout-content>
-      <a-layout-footer class="footer">Footer</a-layout-footer>
+      <a-layout-footer class="footer"
+        >© 2025 毕业设计 联系方式：2310610062@qq.com</a-layout-footer
+      >
     </a-layout>
   </div>
 </template>
@@ -25,10 +27,12 @@
 #basiclayout .content {
   padding: 20px;
   margin-bottom: 16px;
+  background-color: rgb(247, 248, 250);
 }
 
 #basiclayout .footer {
-  background: #efefef;
+  background-color: rgb(26, 26, 26);
+  color: rgb(177, 170, 170);
   padding: 16px;
   text-align: center;
 }

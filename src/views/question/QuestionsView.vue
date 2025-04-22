@@ -14,6 +14,7 @@
     <a-divider :size="0"></a-divider>
     <a-table
       :columns="columns"
+      :boder="true"
       :data="dataList"
       :show="show"
       :pagination="{
@@ -25,7 +26,7 @@
       @page-change="onPageChange"
     >
       <template #title="{ record }">
-        <a-space>
+        <a-space style="cursor: pointer">
           <div @click="doQuesitons(record)">{{ record.title }}</div>
         </a-space>
       </template>
@@ -71,7 +72,7 @@ const dataList = ref([]);
 const total = ref(0);
 const searchParams = ref<QuestionQueryRequest>({
   current: 1,
-  pageSize: 10,
+  pageSize: 9,
   title: "",
   tags: [],
 });
@@ -98,10 +99,15 @@ const columns = [
   {
     title: "题号",
     dataIndex: "id",
+    ellipsis: true,
+    tooltip: true,
+    width: 100,
   },
   {
     title: "题目名称",
     slotName: "title",
+    ellipsis: true,
+    tooltip: true,
   },
   {
     title: "标签",
