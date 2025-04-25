@@ -1,10 +1,18 @@
 <template>
   <div id="addQuetionView">
-    <a-form :model="form" label-align="left">
-      <a-form-item field="title" label="标题">
+    <a-form ref="formRef" :model="form" label-align="left">
+      <a-form-item
+        field="title"
+        label="标题"
+        :rules="[{ required: true, message: '标题未填' }]"
+      >
         <a-input v-model="form.title" placeholder="请输入标题"></a-input>
       </a-form-item>
-      <a-form-item field="tags" label="标签">
+      <a-form-item
+        field="tags"
+        label="标签"
+        :rules="[{ required: true, message: '标签未填' }]"
+      >
         <a-input-tag
           v-model="form.tags"
           placeholder="请输入标签"
@@ -18,7 +26,11 @@
           style="min-width: 900px"
         />
       </a-form-item>
-      <a-form-item field="content" label="题目内容">
+      <a-form-item
+        field="content"
+        label="题目内容"
+        :rules="[{ required: true, message: '题目内容未填' }]"
+      >
         <MdEditor
           :contents="form.content"
           :handle-change="handleContentChange"
@@ -58,32 +70,35 @@
       </a-form-item>
       <a-form-item
         v-for="(judgeCaseItem, index) of form.judgeCase"
-        :label="`测试用例-${index}`"
+        :label="`用例-${index}`"
         :key="index"
       >
         <a-space direction="vertical" style="min-width: 480px">
           <a-form-item
             :field="`form.judgeCase[${index}].input`"
-            :label="`输入测试用例`"
+            :label="`输入用例`"
           >
-            <a-input v-model="judgeCaseItem.input" placeholder="输入测试用例" />
+            <a-input v-model="judgeCaseItem.input" placeholder="输入用例" />
           </a-form-item>
           <a-form-item
             :field="`form.judgeCase[${index}].output`"
-            :label="`输出测试用例`"
+            :label="`输出用例`"
           >
-            <a-input
-              v-model="judgeCaseItem.output"
-              placeholder="输出测试用例"
-            />
+            <a-input v-model="judgeCaseItem.output" placeholder="输出用例" />
           </a-form-item>
-          <a-button @click="handleDelete(index)" :style="{ marginLeft: '10px' }"
+          <a-button
+            type="primary"
+            status="warning"
+            @click="handleDelete(index)"
+            :style="{ marginLeft: '10px' }"
             >删除</a-button
           >
         </a-space>
       </a-form-item>
       <a-form-item>
-        <a-button @click="handleAdd">新增测试用例</a-button>
+        <a-button type="primary" status="success" @click="handleAdd"
+          >新增用例</a-button
+        >
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="doSubmit">{{
@@ -98,11 +113,12 @@
 import { QuestionControllerService } from "@/api";
 import MdEditor from "@/components/MdEditor.vue";
 import { Message } from "@arco-design/web-vue";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
+const formRef = ref();
 // 表单数据
 const form = reactive({
   title: "",
@@ -196,6 +212,11 @@ const handleContentChange = (value: any) => {
  * 提交
  */
 const doSubmit = async () => {
+  const formRes = await formRef.value?.validate();
+  console.log("formRes", formRes);
+  if (formRes) {
+    return;
+  }
   if (updatePage) {
     const res = await QuestionControllerService.updateQuestionUsingPost(form);
     if (res.code === 0) {

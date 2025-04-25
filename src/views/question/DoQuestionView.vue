@@ -43,7 +43,9 @@
             </a-select>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="onSubmit">提交</a-button>
+            <a-button type="primary" @click="() => (commitVisible = true)"
+              >提交</a-button
+            >
           </a-form-item>
         </a-form>
         <CodeEditor
@@ -53,6 +55,15 @@
         />
       </a-col>
     </a-row>
+
+    <a-modal
+      :visible="commitVisible"
+      @ok="onSubmit"
+      @cancel="() => (commitVisible = false)"
+      width="auto"
+    >
+      确定提交代码吗？
+    </a-modal>
   </div>
 </template>
 
@@ -71,6 +82,7 @@ import MdViewer from "@/components/MdViewer.vue";
 const route = useRoute();
 const router = useRouter();
 const id = route.query.id;
+const commitVisible = ref(false);
 // 数据列表初始化
 const question = ref<QuestionVO>();
 const form = ref<QuestionSubmitAddRequest>({
@@ -102,10 +114,12 @@ const onSubmit = async () => {
     questionId: id as any,
   });
   if (res.code === 0) {
-    Message.success("提交成功");
-    router.push({
-      path: "/questionsSubmit",
-    });
+    Message.success("提交成功,等待跳转");
+    setTimeout(() => {
+      router.push({
+        path: "/questionsSubmit",
+      });
+    }, 1000);
   } else {
     Message.error(res.message);
   }

@@ -46,7 +46,13 @@
       </template>
       <template #judgeInfo="{ record }">
         <a-space>
-          {{ JSON.stringify(record.judgeInfo) }}
+          <a-tag
+            :color="
+              infoStatus[JSON.parse(JSON.stringify(record.judgeInfo)).message]
+                .color
+            "
+            >{{ JSON.parse(JSON.stringify(record.judgeInfo)).message }}</a-tag
+          >
         </a-space>
       </template>
       <template #createTime="{ record }">
@@ -67,6 +73,8 @@ import {
 import { Message } from "@arco-design/web-vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
+import { color } from "echarts";
+import { text } from "body-parser";
 
 const router = useRouter();
 // 定义状态映射
@@ -84,6 +92,17 @@ const statusMap = {
     color: "green",
   },
   3: {
+    text: "失败",
+    color: "red",
+  },
+};
+// 定义判题
+const infoStatus = {
+  Accepted: {
+    text: "成功",
+    color: "green",
+  },
+  "Wrong Answer": {
     text: "失败",
     color: "red",
   },

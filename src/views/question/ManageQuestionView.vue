@@ -26,20 +26,15 @@
         <a-typography-text
           ellipsis
           style="cursor: pointer; margin-bottom: 0"
-          @click="() => (contentVisible = true)"
+          @click="
+            () => {
+              contentVisible = true;
+              contentData = record.content;
+            }
+          "
         >
           {{ record.content }}
         </a-typography-text>
-        <a-modal
-          width="auto"
-          :visible="contentVisible"
-          @cancel="() => (contentVisible = false)"
-        >
-          <div>
-            <md-viewer :contents="record.content"></md-viewer>
-          </div>
-          <template #footer><div></div> </template>
-        </a-modal>
       </template>
       <template #tags="{ record }">
         <div style="display: flex; flex-wrap: nowrap">
@@ -55,20 +50,15 @@
         <a-typography-text
           ellipsis
           style="cursor: pointer; margin-bottom: 0"
-          @click="() => (answerVisible = true)"
+          @click="
+            () => {
+              answerVisible = true;
+              answerData = record.answer;
+            }
+          "
         >
           {{ record.answer }}
         </a-typography-text>
-        <a-modal
-          width="auto"
-          :visible="answerVisible"
-          @cancel="() => (answerVisible = false)"
-        >
-          <div>
-            <md-viewer :contents="record.answer"></md-viewer>
-          </div>
-          <template #footer><div></div> </template>
-        </a-modal>
       </template>
       <template #userId="{ record }">
         <a-typography-text ellipsis style="margin-bottom: 0">
@@ -105,11 +95,31 @@
             @cancel="() => (deleteVisible = false)"
             hide-title
           >
-            <a-alert type="warning">确定删除本条数据吗？</a-alert>
+            <a-alert type="warning">确定删除改题目吗？</a-alert>
           </a-modal>
         </a-space>
       </template>
     </a-table>
+    <a-modal
+      width="auto"
+      :visible="contentVisible"
+      @cancel="() => (contentVisible = false)"
+    >
+      <div>
+        <md-viewer :contents="contentData"></md-viewer>
+      </div>
+      <template #footer><div></div> </template>
+    </a-modal>
+    <a-modal
+      width="auto"
+      :visible="answerVisible"
+      @cancel="() => (answerVisible = false)"
+    >
+      <div>
+        <md-viewer :contents="answerData"></md-viewer>
+      </div>
+      <template #footer><div></div> </template>
+    </a-modal>
     <a-modal :visible="jsonVisible" @cancel="() => (jsonVisible = false)">
       <div style="display: flex; justify-content: center">
         <a-space direction="vertical">
@@ -145,8 +155,10 @@ const router = useRouter();
 // 控制对话框显示
 // 内容的
 const contentVisible = ref(false);
+const contentData = "";
 // 答案的
 const answerVisible = ref(false);
+const answerData = "";
 // 删除的
 const deleteVisible = ref(false);
 // json数据化的
