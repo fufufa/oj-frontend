@@ -40,9 +40,14 @@
                 </a-typography-text></a-button
               >
               <template #content>
-                <a-button type="primary" status="danger" @click="signOut"
-                  >退出登录</a-button
-                >
+                <a-space direction="vertical" style="width: 100%">
+                  <a-button type="primary" @click="handleClick('/user/profile')"
+                    >个人中心</a-button
+                  >
+                  <a-button type="primary" status="danger" @click="signOut"
+                    >退出登录</a-button
+                  >
+                </a-space>
               </template>
             </a-popover>
           </div>
@@ -59,7 +64,7 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import checkAccess from "@/access/checkAccess";
 import { UserControllerService } from "@/api";
-import message from "@arco-design/web-vue/es/message";
+import { Message } from "@arco-design/web-vue";
 
 const router = useRouter();
 const store = useStore();
@@ -93,10 +98,10 @@ const handleClick = (key) => {
 const signOut = async () => {
   const res = await UserControllerService.userLogoutUsingPost();
   if (res.code === 0) {
-    message.success("退出成功");
+    Message.success("退出成功");
     await store.dispatch("getLoginUser");
   } else {
-    message.error("退出失败" + res.message);
+    Message.error("退出失败" + res.message);
   }
 };
 </script>

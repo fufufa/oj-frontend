@@ -2,12 +2,13 @@ import { RouteRecordRaw } from "vue-router";
 import ACCESS_AUTH from "@/access/accessAuth";
 import UserLayout from "@/layouts/UserLayout.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
-import UserRegisterView from "@/views/user/UserRegisterView.vue";
 import AddQuestionView from "@/views/question/AddQuestionView.vue";
 import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
 import QuestionsView from "@/views/question/QuestionsView.vue";
 import DoQuestionView from "@/views/question/DoQuestionView.vue";
 import QuestionSubmitView from "@/views/question/QuestionSubmitView.vue";
+import UserProfileView from "@/views/user/UserProfileView.vue";
+import UserManageView from "@/views/user/UserManageView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -22,6 +23,11 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/user/login",
         name: "用户登录",
         component: UserLoginView,
+      },
+      {
+        path: "/user/profile",
+        name: "个人中心",
+        component: UserProfileView,
       },
     ],
   },
@@ -72,6 +78,14 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/manage/question",
     name: "管理题目",
     component: ManageQuestionView,
+    meta: {
+      access: ACCESS_AUTH.ADMIN,
+    },
+  },
+  {
+    path: "/manage/user",
+    name: "用户管理",
+    component: UserManageView,
     meta: {
       access: ACCESS_AUTH.ADMIN,
     },
